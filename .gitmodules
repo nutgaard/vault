@@ -1,0 +1,3 @@
+[submodule "vault-storage"]
+	path = vault-storage
+	url = git@github.com:nutgaard/vault-storage.git
