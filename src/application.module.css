@@ -1,0 +1,34 @@
+.application {
+  text-align: center;
+  background-color: var(--theme-color);
+  min-height: 100vh;
+}
+
+.logo {
+  width: 40vmin;
+  pointer-events: none;
+  transition: width ease-in-out 200ms;
+}
+.logo_init {
+  width: 90vmin;
+}
+.logo_listview {
+  width: 40vmin;
+}
+.logo_loadnew {
+  width: 20vmin;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.content {
+  width: 40vmin;
+  margin: 0 auto;
+}

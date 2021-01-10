@@ -1,8 +1,11 @@
 :root {
     --theme-color: #c1272d;
+    --text-color: #3e3832;
     --background-color: #f7f7f7;
     --ring: #e0e0e0;
-    --highlight: #c27477;
+    --highlight: #d98285;
+    --highlight-dark: #c27477;
+    --highlight-darker: #995c5e;
 }
 
 

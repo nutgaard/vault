@@ -1,0 +1,19 @@
+.button {
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--ring);
+  background-color: var(--highlight);
+  line-height: 1.375rem;
+}
+.button:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--highlight);
+}
+.button:hover {
+  background-color: var(--highlight-dark);
+}
+.button:active {
+  background-color: var(--highlight-darker);
+}

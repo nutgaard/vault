@@ -1,0 +1,32 @@
+.list_of_files {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list_element a {
+    position: relative;
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem;
+
+}
+
+.list_element a:focus {
+    outline: 0;
+    box-shadow: 0 0 0 1px var(--text-color);
+    z-index: 1;
+}
+
+.list_element:nth-child(2n) {
+    background-color: var(--ring);
+}
+
+.list_element:hover {
+    background-color: var(--highlight);
+}
+
+.list_element:focus-within {
+    background-color: var(--highlight);
+}
