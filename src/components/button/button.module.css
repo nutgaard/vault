@@ -17,3 +17,8 @@
 .button:active {
   background-color: var(--highlight-darker);
 }
+
+.flat {
+  border-color: var(--highlight);
+  background-color: var(--background-color);
+}

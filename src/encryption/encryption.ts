@@ -1,5 +1,27 @@
 import * as ArrayBufferUtils from './arraybuffer-utils';
-import {TypedBuffer} from "./arraybuffer-utils";
+import { TypedBuffer} from "./arraybuffer-utils";
+import {EncodedEncryptedContent, EncodedEncryptedData, EncodedEncryptionConfigPublic} from "./domain";
+import {Validation} from "io-ts";
+import { either } from 'fp-ts';
+
+interface EncryptedData {
+    iv: TypedBuffer;
+    data: ArrayBuffer;
+}
+
+interface EncryptionConfigPublic {
+    salt: TypedBuffer;
+    encryptedK1: EncryptedData;
+    k3: CryptoKey;
+}
+interface EncryptionConfigPrivate {
+    k1: CryptoKey;
+    k2: CryptoKey;
+}
+interface EncryptionConfig {
+    public: EncryptionConfigPublic;
+    private: EncryptionConfigPrivate;
+}
 
 function getRandomBits(bits: number): TypedBuffer {
     const data = new Uint8Array(bits / 8);
@@ -51,14 +73,7 @@ async function convertToKey(data: ArrayBuffer, keyUsages: KeyUsage[]) {
         keyUsages
     )
 }
-interface EncryptedData {
-    iv: TypedBuffer;
-    data: ArrayBuffer;
-}
-interface EncodedEncryptedData {
-    iv: string;
-    data: string;
-}
+
 async function encrypt(data: ArrayBuffer, key: CryptoKey): Promise<EncryptedData> {
     const iv = getRandomBits(256);
     const encrypted = await crypto.subtle.encrypt(
@@ -87,27 +102,7 @@ async function init(password: string) {
     const k1 = await convertToKey(getRandomBits(256), ['encrypt', 'decrypt']);
     return initWithK1(password, k1);
 }
-interface EncryptionConfig {
-    public: EncryptionConfigPublic;
-    private: EncryptionConfigPrivate;
-}
-interface EncryptionConfigPublic {
-    salt: TypedBuffer;
-    encryptedK1: EncryptedData;
-    k3: CryptoKey;
-}
-interface EncryptionConfigPrivate {
-    k1: CryptoKey;
-    k2: CryptoKey;
-}
-interface EncodedEncryptionConfigPublic {
-    salt: string;
-    encryptedK1: EncodedEncryptedData;
-    k3: string;
-}
-export interface EncodedEncryptedContent extends EncodedEncryptionConfigPublic {
-    data: EncodedEncryptedData;
-}
+
 async function initWithK1(password: string, k1: CryptoKey): Promise<EncryptionConfig> {
     const salt = getRandomBits(128);
     const [k2, k3] = await generateKey(password, salt).then(splitKey);
@@ -127,16 +122,27 @@ async function initWithK1(password: string, k1: CryptoKey): Promise<EncryptionCo
     };
 }
 
-async function load(password: string, publicConfig: EncryptionConfigPublic): Promise<EncryptionConfig> {
-    const { salt, encryptedK1, k3: expectedK3 } = publicConfig;
+type PreparedData = EncryptionConfigPublic & { k2: CryptoKey; correctPassword: boolean; }
+async function prepareLoad(password: string, publicConfig: EncryptionConfigPublic): Promise<PreparedData> {
+    const { salt, k3: expectedK3 } = publicConfig;
     console.log('loading');
     const [k2, k3] = await generateKey(password, salt).then(splitKey);
     console.log('loaded', k2, k3);
 
     const k3Exported = await crypto.subtle.exportKey('raw', k3);
     const expectedK3Exported = await crypto.subtle.exportKey('raw', expectedK3);
+    const correctPassword = ArrayBufferUtils.equals(k3Exported, expectedK3Exported);
+    return {
+        ...publicConfig,
+        k2,
+        correctPassword,
+    }
+}
 
-    if (!ArrayBufferUtils.equals(k3Exported, expectedK3Exported)) {
+async function load(password: string, publicConfig: EncryptionConfigPublic): Promise<EncryptionConfig> {
+    const { correctPassword, encryptedK1, k2, k3, salt } = await prepareLoad(password, publicConfig);
+
+    if (!correctPassword) {
         throw new Error(`Invalid password or data`);
     }
 
@@ -161,6 +167,7 @@ function base64EncodeEncrypted(encryptedData: EncryptedData): EncodedEncryptedDa
     const data = Buffer.from(encryptedData.data).toString('base64');
     return { iv, data };
 }
+
 async function base64EncodePublic(config: EncryptionConfigPublic): Promise<EncodedEncryptionConfigPublic> {
     const salt = Buffer.from(config.salt).toString('base64');
     const exportedK3 = await crypto.subtle.exportKey('raw', config.k3);
@@ -178,6 +185,7 @@ function base64DecodeEncrypted(encryptedData: EncodedEncryptedData): EncryptedDa
     const data = Buffer.from(encryptedData.data, 'base64');
     return { iv, data };
 }
+
 async function base64DecodePublic(json: EncodedEncryptionConfigPublic): Promise<EncryptionConfigPublic> {
     const salt = new Uint8Array(Buffer.from(json.salt, 'base64'));
     const importedK3 = Buffer.from(json.k3, 'base64');
@@ -221,11 +229,27 @@ export default class Encryption {
         return decoder.decode(decrypted);
     }
 
+    async verifyPassword(password: string, data: EncodedEncryptedContent): Promise<boolean> {
+        const decodedConfig = await base64DecodePublic(data);
+        const config = await prepareLoad(password, decodedConfig);
+        return config.correctPassword;
+    }
+
     async changePassword(oldPassword: string, newPassword: string, data: EncodedEncryptedContent): Promise<EncodedEncryptedContent> {
         const decodedConfig = await base64DecodePublic(data);
         const config = await load(oldPassword, decodedConfig);
         const newConfig = await initWithK1(newPassword, config.private.k1);
         const output = await base64EncodePublic(newConfig.public);
         return appendData(output, data.data)
+    }
+}
+
+export function readBase64ToJson(base64: string): Validation<EncodedEncryptedContent> {
+    try {
+        const content = Buffer.from(base64, 'base64').toString();
+        const json = JSON.parse(content);
+        return EncodedEncryptedContent.decode(json);
+    } catch (e) {
+        return either.left([]);
     }
 }

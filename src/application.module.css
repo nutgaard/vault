@@ -16,7 +16,12 @@
   width: 40vmin;
 }
 .logo_loadnew {
-  width: 20vmin;
+  width: 35vmin;
+}
+.logo_loadnew_uploadfile,
+.logo_loadnew_copypaste,
+.logo_loadnew_linktofile {
+  width: 30vmin;
 }
 
 .header {

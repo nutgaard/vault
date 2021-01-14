@@ -1,12 +1,13 @@
 import * as DB from 'idb-keyval';
 import { Store } from "idb-keyval";
+import {EncodedEncryptedContent} from "./encryption/domain";
 
 const store = new Store("vault", "vault");
 
-export function get<TYPE>(key: string): Promise<TYPE> {
-    return DB.get<TYPE>(key, store);
+export function get(key: string): Promise<EncodedEncryptedContent> {
+    return DB.get(key, store);
 }
-export function set(key: string, value: any): Promise<void> {
+export function set(key: string, value: EncodedEncryptedContent): Promise<void> {
     return DB.set(key, value, store);
 }
 export function del(key: string): Promise<void> {

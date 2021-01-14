@@ -4,8 +4,11 @@ import { RecoilRoot } from "recoil";
 import Application from './application';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
-import * as t from 'io-ts';
-import {PathReporter} from "io-ts/PathReporter";
+import './encryption/domain';
+import { setAppElement } from './components/user-popup-inputs/user-popup-inputs'
+
+const appRoot: HTMLElement = document.getElementById('root')!!;
+setAppElement(appRoot);
 
 ReactDOM.render(
     <React.StrictMode>
@@ -13,19 +16,7 @@ ReactDOM.render(
             <Application />
         </RecoilRoot>
     </React.StrictMode>,
-    document.getElementById('root')
+    appRoot
 );
 
 reportWebVitals(console.log);
-
-const User = t.type({
-    name: t.string,
-    age: t.number
-});
-type User = t.TypeOf<typeof User>
-const result = User.decode({
-    name: 'hei',
-    age: '123'
-});
-console.log('user', result, PathReporter.report(result));
-

@@ -4,13 +4,17 @@ import css from './button.module.css';
 
 type HtmlProps = React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
 interface Props extends HtmlProps {
-
+    flat: boolean;
 }
 
 function Button(props: Props) {
+    const { flat, ...rest} = props;
     return (
-        <button { ...props } className={cls(css.button, props.className)} />
+        <button { ...rest } className={cls(css.button, props.className, { [css.flat]: flat })} />
     )
+}
+Button.defaultProps = {
+    flat: false
 }
 
 export default Button;

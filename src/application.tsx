@@ -2,12 +2,16 @@ import React from 'react';
 import {useRecoilState} from "recoil";
 import * as DB from './database';
 import state, {listviewState, States} from "./recoil/state";
-import {useAsyncEffect} from "./hooks/useAsyncEffect";
+import {useAsyncEffect} from "./hooks/use-async-effect";
 import EncryptedFiles from "./views/encrypted-files/encrypted-files";
 import css from './application.module.css';
-import Encryption, {EncodedEncryptedContent} from "./encryption/encryption";
+import Encryption from "./encryption/encryption";
 import LoadNew from "./views/load-new/load-new";
 import cls from "./components/cls";
+import {EncodedEncryptedContent} from "./encryption/domain";
+import CopyPasteContent from "./views/load-new/copy-paste-content";
+import UploadContent from "./views/load-new/upload-content";
+import LinkToContent from "./views/load-new/link-to-content";
 
 (window as any).IDB = DB;
 
@@ -57,6 +61,9 @@ function getView(state: States): React.ReactElement<{}> {
         case "init": return <></>
         case "listview": return <EncryptedFiles state={state} />
         case "loadnew": return <LoadNew state={state}/>
+        case "loadnew_copypaste": return <CopyPasteContent state={state}/>
+        case "loadnew_linktofile": return <LinkToContent state={state}/>
+        case "loadnew_uploadfile": return <UploadContent state={state}/>
         case "fileview": return <div>Loading...</div>
     }
 }
@@ -67,7 +74,7 @@ function Application() {
 
     useAsyncEffect(async () => {
         if (currentState.key === 'init') {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            await new Promise((resolve) => setTimeout(resolve, 500));
             const files = await DB.keys();
             setState(listviewState({ files }));
         }

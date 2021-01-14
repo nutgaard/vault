@@ -1,11 +1,11 @@
-.header {
-  font-size: 1rem;
-  color: var(--text-color);
-  margin: 0 0 0.25rem;
+.content {
+  padding: 0.5rem;
+  text-align: center;
 }
 
-.content {
-  padding: 0 0.5rem;
+.content button {
+  margin: 0.5rem 0;
+  width: 100%;
 }
 
 .drag_container {
@@ -14,6 +14,11 @@
   border: 2px dashed var(--highlight-darker);
   border-radius: 4px;
   padding: 2rem
+}
+
+.drag_container:focus-within {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--highlight);
 }
 
 .drag_container:hover {
@@ -58,12 +63,19 @@
   border: 1px solid var(--ring);
   line-height: 1.375rem;
 }
+.textarea:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--highlight);
+}
 
-.input {
-  width: 100%;
-  font-weight: 400;
-  padding: 0.5rem;
-  border-radius: 0.25rem;
-  border: 1px solid var(--ring);
-  line-height: 1.375rem;
+.errormessage {
+  display: block;
+  text-align: left;
+  padding-left: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--highlight-darker)
+}
+
+.fileupload_errormessage {
+  padding-left: 1.5rem;
 }
