@@ -32,8 +32,10 @@
 }
 
 .content {
-    width: 40vmin;
+    max-width: 25rem;
+    width: 100%;
     margin: 0 auto;
+    padding: 0 1rem;
 }
 
 .header {
