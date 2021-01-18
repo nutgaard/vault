@@ -14,6 +14,11 @@ export interface ListviewState extends State {
     files: string[];
 }
 
+export interface PromptPasswordState extends State {
+    key: 'promptpassword';
+    files: string[];
+}
+
 export interface LoadnewState extends State {
     key: 'loadnew';
     files: string[];
@@ -35,16 +40,30 @@ export interface LoadnewStateLinkToFile extends State {
 export interface FileviewState extends State {
     key: 'fileview';
     files: string[];
-    file: string;
+    content: Array<{ filepath: string; content: string; }>;
 }
 
-export type States = InitState | ListviewState | LoadnewState | LoadnewStateCopyPaste |LoadnewStateLinkToFile | LoadnewStateUploadFile | FileviewState;
+export interface LoadingFileviewState extends State {
+    key: 'fileview_loading';
+    files: string[];
+    content: Array<{ filepath: string; content: string; }>;
+}
+
+export interface LockingFileviewState extends State {
+    key: 'fileview_locking';
+    files: string[];
+}
+
+export type States = InitState | ListviewState | PromptPasswordState | LoadnewState | LoadnewStateCopyPaste |LoadnewStateLinkToFile | LoadnewStateUploadFile | LoadingFileviewState | FileviewState | LockingFileviewState;
 
 export function initState(base: StateAlike<InitState>): InitState {
     return { key: 'init' }
 }
 export function listviewState(base: StateAlike<ListviewState>): ListviewState {
     return { key: 'listview', files: base.files };
+}
+export function promptPasswordState(base: StateAlike<PromptPasswordState>): PromptPasswordState {
+    return { key: 'promptpassword', files: base.files };
 }
 export function loadnewState(base: StateAlike<LoadnewState>): LoadnewState {
     return { key: 'loadnew', files: base.files };
@@ -59,7 +78,17 @@ export function loadnewLinkToFileState(base: StateAlike<LoadnewStateLinkToFile>)
     return { key: 'loadnew_linktofile', files: base.files };
 }
 export function fileviewState(base: StateAlike<FileviewState>): FileviewState {
-    return { key: 'fileview', files: base.files, file: base.file };
+    return { key: 'fileview', files: base.files, content: base.content };
+}
+export function loadingFileviewState(base: StateAlike<LoadingFileviewState>): LoadingFileviewState {
+    return { key: 'fileview_loading', files: base.files, content: base.content };
+}
+export function lockingFileviewState(base: StateAlike<LockingFileviewState>): LockingFileviewState {
+    return { key: 'fileview_locking', files: base.files };
+}
+
+export function isFileviewAlike(base: States): base is FileviewState | LoadingFileviewState  {
+    return base.key.startsWith('fileview');
 }
 
 export default atom<States>({

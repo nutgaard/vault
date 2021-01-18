@@ -1,91 +1,105 @@
-import React from 'react';
-import {useRecoilState} from "recoil";
+import React, {useState} from 'react';
+import {useRecoilState, useRecoilValue} from "recoil";
 import * as DB from './database';
-import state, {listviewState, States} from "./recoil/state";
+import state, {fileviewState, initState, isFileviewAlike, listviewState, States} from "./recoil/state";
 import {useAsyncEffect} from "./hooks/use-async-effect";
 import EncryptedFiles from "./views/encrypted-files/encrypted-files";
 import css from './application.module.css';
-import Encryption from "./encryption/encryption";
 import LoadNew from "./views/load-new/load-new";
 import cls from "./components/cls";
-import {EncodedEncryptedContent} from "./encryption/domain";
 import CopyPasteContent from "./views/load-new/copy-paste-content";
 import UploadContent from "./views/load-new/upload-content";
 import LinkToContent from "./views/load-new/link-to-content";
+import Fileview from "./views/fileview/fileview";
+import {useDelayedEffect} from "./hooks/use-delayed-effect";
 
 (window as any).IDB = DB;
 
-const sourceDirectory = './';
-async function fetchData(source: string): Promise<EncodedEncryptedContent> {
-    console.log('fetching data', source);
-    const response = await fetch(sourceDirectory + source)
-    const encodedData = await response.text();
-    const decodedData = Buffer.from(encodedData, 'base64').toString();
-    return JSON.parse(decodedData);
-}
-
-async function getData(source: string, forceDownload: boolean = false): Promise<EncodedEncryptedContent> {
-    const stored = await DB.keys();
-    const dbHasData = stored.includes(source);
-    if (!dbHasData || forceDownload) {
-        const data = await fetchData(source);
-        console.log('storing data', source);
-        await DB.set(source, data)
-        return data;
-    }
-    console.log('using cached data', source);
-    return DB.get(source);
-}
-
-async function testing() {
-    const data: EncodedEncryptedContent = await getData('data.enc');
-    console.log('data', data);
-
-    const encryption = new Encryption();
-    const decrypted: string = await encryption.decrypt('password', data);
-    const json = JSON.parse(decrypted);
-    console.log('json', json);
-}
-//
-// function openGithubWindow() {
-//     const w = 800;
-//     const h = 800;
-//     const y = window.top.outerHeight / 2 + window.top.screenY - ( h / 2);
-//     const x = window.top.outerWidth / 2 + window.top.screenX - ( w / 2);
-//     const features = `toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=${w}, height=${h}, top=${y}, left=${x}`;
-//     window.open('https://github.com/nutgaard/vault-storage/tree/master/data', 'vault-data', features, true)
-// }
-
 function getView(state: States): React.ReactElement<{}> {
     switch (state.key) {
-        case "init": return <></>
-        case "listview": return <EncryptedFiles state={state} />
-        case "loadnew": return <LoadNew state={state}/>
-        case "loadnew_copypaste": return <CopyPasteContent state={state}/>
-        case "loadnew_linktofile": return <LinkToContent state={state}/>
-        case "loadnew_uploadfile": return <UploadContent state={state}/>
-        case "fileview": return <div>Loading...</div>
+        case "init":
+            return <></>
+        case "listview":
+            return <EncryptedFiles state={state}/>
+        case "promptpassword":
+            return <></>
+        case "loadnew":
+            return <LoadNew state={state}/>
+        case "loadnew_copypaste":
+            return <CopyPasteContent state={state}/>
+        case "loadnew_linktofile":
+            return <LinkToContent state={state}/>
+        case "loadnew_uploadfile":
+            return <UploadContent state={state}/>
+        case "fileview":
+        case "fileview_loading":
+        case "fileview_locking":
+            return <></>
     }
 }
 
-function Application() {
-    const [currentState, setState] = useRecoilState(state);
-    const view = getView(currentState);
+function UnlockedLayer() {
+    const currentState = useRecoilValue(state);
+    if (isFileviewAlike(currentState)) {
+        return <Fileview state={currentState}/>
+    }
+    return null;
+}
 
+interface OpeningLayerProps {
+    isOpening: boolean;
+    onComplete?: () => void;
+}
+function OpeningLayer(props: OpeningLayerProps) {
+    const { isOpening, onComplete } = props;
+    const [open, setOpen] = useState<boolean>(!isOpening);
+    useDelayedEffect(() => { setOpen(isOpening); }, 100, [setOpen, isOpening]);
+
+    return (
+        <div className={cls(css.opening_layer)}>
+            <header
+                className={cls(css.header, css.split_header, open ? css.split_header__open : null)}
+                onTransitionEnd={onComplete}
+            >
+                <div className={cls(css.pane, css.left_pane)}>
+                    <img
+                        src={`${process.env.PUBLIC_URL}/lock.svg`}
+                        className={cls(css.logo, css.logo_opening, 'block-m')}
+                        alt="splash screen of lock"
+                    />
+                </div>
+                <div className={cls(css.pane, css.right_pane)} />
+            </header>
+        </div>
+    );
+}
+
+function LockedLayer() {
+    const [currentState, setState] = useRecoilState(state);
     useAsyncEffect(async () => {
         if (currentState.key === 'init') {
             await new Promise((resolve) => setTimeout(resolve, 500));
             const files = await DB.keys();
-            setState(listviewState({ files }));
+            setState(listviewState({files}));
         }
     }, [currentState])
 
+    const view = getView(currentState);
     const logoclass = css[`logo_${currentState.key}`];
+
+    if (currentState.key === 'fileview_loading') {
+        return <OpeningLayer isOpening={true} onComplete={() => setState(fileviewState(currentState))}/>;
+    } else if (currentState.key === 'fileview_locking') {
+        return <OpeningLayer isOpening={false} onComplete={() => setState(initState(currentState))}/>;
+    } else if (currentState.key === 'fileview') {
+        return null;
+    }
+
     return (
         <div className={css.application}>
             <header className={css.header}>
                 <img
-                    src={`${process.env.PUBLIC_URL}/logo.svg`}
+                    src={`${process.env.PUBLIC_URL}/lock.svg`}
                     className={cls(css.logo, logoclass, 'block-m')}
                     alt="splash screen of lock"
                 />
@@ -94,6 +108,15 @@ function Application() {
                 {view}
             </main>
         </div>
+    );
+}
+
+function Application() {
+    return (
+        <>
+            <UnlockedLayer />
+            <LockedLayer />
+        </>
     );
 }
 

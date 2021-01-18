@@ -1,0 +1,25 @@
+.fileview {
+    display: grid;
+    grid-template-areas: "logo header" "sidebar sidebar" "content content" "buttons buttons";
+    grid-template-rows: 4rem auto 1fr 2rem;
+    grid-template-columns: 4rem 1fr;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+@media (min-width: 45rem) {
+    .fileview {
+        grid-template-areas:    "logo       header"
+                                "sidebar    content"
+                                "buttons    content";
+        grid-template-rows: 4rem 1fr 2rem;
+        grid-template-columns: 15rem 1fr;
+    }
+}
+
+.logo { grid-area: logo; }
+.header { grid-area: header; }
+.sidebar { grid-area: sidebar; }
+.buttons { grid-area: buttons; }
+.content { grid-area: content; }
