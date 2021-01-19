@@ -1,0 +1,77 @@
+.wrapper {
+
+}
+.wrapper button:focus {
+    z-index: 2;
+}
+
+.directory_wrapper {
+
+}
+.directory {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem;
+    font-weight: bold;
+    border: 1px solid var(--ring);
+    border-bottom-width: 2px;
+    background: white none;
+}
+.directory svg {
+    margin-right: 0.25rem;
+}
+.directory:after {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.75rem;
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border: 0.5rem solid transparent;
+    border-left-width: 0.25rem;
+    border-right-width: 0.25rem;
+    border-top-color: black;
+}
+.directory_open:after {
+    border-top-color: transparent;
+    border-bottom-color: black;
+    top: 0.25rem;
+}
+.directory:hover {
+    background-color: var(--ring);
+}
+.directory:active {
+    background-color: var(--ring-dark);
+}
+.files_wrapper {
+    padding-left: 0.25rem;
+    background-color: var(--theme-open-color);
+}
+.file {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem;
+    font-weight: bold;
+    border: none;
+    border-bottom: 1px solid var(--ring);
+    background: white none;
+}
+.file svg {
+    margin-right: 0.25rem;
+}
+.file:hover {
+    background-color: var(--ring);
+}
+.file:active {
+    background-color: var(--ring-dark);
+}
+.file_selected {
+    background-color: var(--theme-open-color-light);
+}

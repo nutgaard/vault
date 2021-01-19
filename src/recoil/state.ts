@@ -40,18 +40,22 @@ export interface LoadnewStateLinkToFile extends State {
 export interface FileviewState extends State {
     key: 'fileview';
     files: string[];
+    file: string;
     content: Array<{ filepath: string; content: string; }>;
 }
 
 export interface LoadingFileviewState extends State {
     key: 'fileview_loading';
     files: string[];
+    file: string;
     content: Array<{ filepath: string; content: string; }>;
 }
 
 export interface LockingFileviewState extends State {
     key: 'fileview_locking';
     files: string[];
+    file: string;
+    content: Array<{ filepath: string; content: string; }>;
 }
 
 export type States = InitState | ListviewState | PromptPasswordState | LoadnewState | LoadnewStateCopyPaste |LoadnewStateLinkToFile | LoadnewStateUploadFile | LoadingFileviewState | FileviewState | LockingFileviewState;
@@ -78,13 +82,13 @@ export function loadnewLinkToFileState(base: StateAlike<LoadnewStateLinkToFile>)
     return { key: 'loadnew_linktofile', files: base.files };
 }
 export function fileviewState(base: StateAlike<FileviewState>): FileviewState {
-    return { key: 'fileview', files: base.files, content: base.content };
+    return { key: 'fileview', files: base.files, file: base.file, content: base.content };
 }
 export function loadingFileviewState(base: StateAlike<LoadingFileviewState>): LoadingFileviewState {
-    return { key: 'fileview_loading', files: base.files, content: base.content };
+    return { key: 'fileview_loading', files: base.files, file: base.file, content: base.content };
 }
 export function lockingFileviewState(base: StateAlike<LockingFileviewState>): LockingFileviewState {
-    return { key: 'fileview_locking', files: base.files };
+    return { key: 'fileview_locking', files: base.files, file: base.file, content: base.content };
 }
 
 export function isFileviewAlike(base: States): base is FileviewState | LoadingFileviewState  {

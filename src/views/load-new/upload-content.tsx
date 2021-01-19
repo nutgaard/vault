@@ -9,8 +9,7 @@ import React, {
 } from "react";
 import css from "./load-new.module.css";
 import {useSetRecoilState} from "recoil";
-import state, {listviewState, loadnewState, LoadnewState, StateAlike} from "../../recoil/state";
-import * as DB from "../../database";
+import state, {loadnewState, LoadnewState, StateAlike} from "../../recoil/state";
 import cls from "../../components/cls";
 import {useAsyncEffect} from "../../hooks/use-async-effect";
 import Button from "../../components/button/button";
@@ -91,7 +90,6 @@ function UploadContent(props: Props) {
         } else {
             const content = await readFileContent(file);
             const validation = readBase64ToJson(content);
-            console.log('validated', validation);
             setError(isRight(validation) ? undefined : "Invalid content");
         }
     }, [file, setError])

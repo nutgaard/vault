@@ -1,5 +1,5 @@
 import React, {useRef} from "react";
-import createFormHook, {FieldState} from '@nutgaard/use-formstate';
+import createFormHook from '@nutgaard/use-formstate';
 import css from "./load-new.module.css";
 import {readBase64ToJson} from "../../encryption/encryption";
 import {isRight} from "fp-ts/Either";
@@ -23,7 +23,6 @@ const useFormValidation = createFormHook<FormData>({
         return value.length > 0 ? undefined : 'Name is required'
     },
     data: memoize((value: string) => {
-        console.log('validating content');
         if (value.length === 0) {
             return "Content is required"
         }

@@ -125,9 +125,7 @@ async function initWithK1(password: string, k1: CryptoKey): Promise<EncryptionCo
 type PreparedData = EncryptionConfigPublic & { k2: CryptoKey; correctPassword: boolean; }
 async function prepareLoad(password: string, publicConfig: EncryptionConfigPublic): Promise<PreparedData> {
     const { salt, k3: expectedK3 } = publicConfig;
-    console.log('loading');
     const [k2, k3] = await generateKey(password, salt).then(splitKey);
-    console.log('loaded', k2, k3);
 
     const k3Exported = await crypto.subtle.exportKey('raw', k3);
     const expectedK3Exported = await crypto.subtle.exportKey('raw', expectedK3);

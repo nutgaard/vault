@@ -1,6 +1,5 @@
 import React from 'react';
 import state, {
-    fileviewState,
     listviewState,
     ListviewState,
     loadingFileviewState,
@@ -36,7 +35,7 @@ function ListOfFiles(props: ListProps) {
             const decryptedString = await encryption.decrypt(password, content)
             const filecontent = JSON.parse(decryptedString);
 
-            setState(loadingFileviewState({ files: props.files, content: filecontent }));
+            setState(loadingFileviewState({ file, files: props.files, content: filecontent }));
         }
     }
     const elements = props.files
