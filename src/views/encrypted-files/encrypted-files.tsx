@@ -41,7 +41,7 @@ function ListOfFiles(props: ListProps) {
     const elements = props.files
         .map((element) => (
             <li className={listviewCss.list_element} key={element}>
-                <a href="#" onClick={clickHandler(element)}>{element}</a>
+                <button className={css.link_button} onClick={clickHandler(element)}>{element}</button>
             </li>
         ));
 
