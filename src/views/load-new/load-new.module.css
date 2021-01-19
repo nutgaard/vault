@@ -1,0 +1,81 @@
+.content {
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.content button {
+  margin: 0.5rem 0;
+  width: 100%;
+}
+
+.drag_container {
+  display: block;
+  text-align: center;
+  border: 2px dashed var(--highlight-darker);
+  border-radius: 4px;
+  padding: 2rem
+}
+
+.drag_container:focus-within {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--highlight);
+}
+
+.drag_container:hover {
+  border-color: var(--text-color);
+  background-color: var(--ring);
+}
+
+.drag_container.highlight {
+  background-color: var(--highlight);
+}
+
+.drag_container input {
+  position: absolute;
+  left: -9999px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 0;
+  color: var(--text-color);
+}
+.separator:before, .separator:after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--ring);
+}
+.separator:before {
+  margin-right: 0.25rem;
+}
+.separator:after {
+  margin-left: 0.25rem;
+}
+
+.textarea {
+  width: 100%;
+  resize: none;
+  font-weight: 400;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--ring);
+  line-height: 1.375rem;
+}
+.textarea:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px var(--highlight);
+}
+
+.errormessage {
+  display: block;
+  text-align: left;
+  padding-left: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--highlight-darker)
+}
+
+.fileupload_errormessage {
+  padding-left: 1.5rem;
+}

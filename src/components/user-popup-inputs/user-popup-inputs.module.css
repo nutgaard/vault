@@ -1,0 +1,47 @@
+:global(.ReactModal__Body--open) {
+    overflow: hidden;
+}
+
+.modal {
+    position: relative;
+    flex-grow: 0;
+    overflow: auto;
+    max-height: 100%;
+    max-width: 30rem;
+    width: 100%;
+    margin-bottom: 0;
+    z-index: 1010;
+    background-color: var(--background-color);
+    padding: 1rem;
+    border-radius: 4px;
+    text-align: right;
+}
+.modal:focus {
+    outline: 0;
+    box-shadow: 0 0 0 3px var(--highlight);
+}
+
+.overlay {
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(61, 56, 49, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.modal button {
+    width: 4.5rem;
+}
+.modal button + button {
+    margin-left: 0.5rem;
+}
+.modal p {
+    margin-top: 0;
+    text-align: left;
+}

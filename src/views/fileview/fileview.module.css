@@ -1,0 +1,86 @@
+.fileview {
+    display: grid;
+    grid-template-areas: "logo header" "sidebar sidebar" "content content" "buttons buttons";
+    grid-template-rows: 4rem auto 1fr 4rem;
+    grid-template-columns: 4rem 1fr;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+@media (min-width: 45rem) {
+    .fileview {
+        grid-template-areas:    "logo       header"
+                                "sidebar    content"
+                                "buttons    content";
+        grid-template-rows: 4rem 1fr 4rem;
+        grid-template-columns: 15rem 1fr;
+    }
+}
+
+.logo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    border-color: var(--ring);
+}
+.logo img {
+    height: 100%;
+    margin-right: 1rem;
+}
+.logo span {
+    font-weight: bold;
+}
+
+.header {
+    grid-area: header;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 1rem;
+    border-bottom: 1px solid;
+    border-color: var(--ring);
+    font-weight: bold;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    padding: 1rem;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    border-color: var(--ring);
+}
+.buttons {
+    grid-area: buttons;
+    border-right: 1px solid;
+    border-color: var(--ring);
+}
+.lock_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    background: var(--theme-color) none;
+}
+.lock_button img {
+    height: 60%;
+    transition: height 200ms ease-in-out;
+}
+.lock_button:hover img {
+    height: 90%;
+}
+.lock_button:active img {
+    height: 85%;
+}
+.content {
+    grid-area: content;
+    background-color: white;
+    padding: 1rem;
+}
+

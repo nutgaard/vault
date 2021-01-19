@@ -1,0 +1,80 @@
+.application {
+    text-align: center;
+    background-color: var(--theme-color);
+    min-height: 100vh;
+}
+
+.logo {
+    width: 40vmin;
+    pointer-events: none;
+    transition: width ease-in-out 200ms;
+    color: var(--theme-color);
+}
+
+.logo_init,
+.logo_promptpassword,
+.logo_opening {
+    width: 90vmin;
+}
+
+.logo_listview {
+    width: 40vmin;
+}
+
+.logo_loadnew {
+    width: 35vmin;
+}
+
+.logo_loadnew_uploadfile,
+.logo_loadnew_copypaste,
+.logo_loadnew_linktofile {
+    width: 30vmin;
+}
+
+.content {
+    max-width: 25rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+.opening_layer {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+}
+.split_header {
+    display: block;
+    position: relative;
+}
+.split_header__open .pane {
+    margin: 0 -100vw;
+}
+
+.pane {
+    position: absolute;
+    width: 50vw;
+    height: 100vh;
+    transition: margin 1500ms ease-in-out;
+    background-color: var(--theme-color);
+}
+
+.left_pane {
+    z-index: 10;
+}
+.left_pane img {
+    position: absolute;
+    right: -45vmin;
+}
+
+.right_pane {
+    right: 0;
+}
