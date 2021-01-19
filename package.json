@@ -2,6 +2,7 @@
   "name": "vault",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/vault",
   "dependencies": {
     "@nutgaard/use-formstate": "^2.4.2",
     "@testing-library/jest-dom": "^5.11.4",
