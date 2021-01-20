@@ -1,6 +1,9 @@
 name: Publish gh-pages
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - 'vault-storage'
 
 env:
   CI: true
