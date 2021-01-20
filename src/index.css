@@ -8,7 +8,13 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+@media (min-width: var(--breakpoint)) {
+  body {
+    overflow-y: hidden;
+  }
 }
 
 code {
