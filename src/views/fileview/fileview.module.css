@@ -8,7 +8,7 @@
     background-color: var(--background-color);
 }
 
-@media (min-width: var(--breakpoint)) {
+@media (min-width: 45rem) {
     .fileview {
         grid-template-areas:    "logo       header"
                                 "sidebar    content"

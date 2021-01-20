@@ -11,7 +11,7 @@ body {
   overflow-x: hidden;
 }
 
-@media (min-width: var(--breakpoint)) {
+@media (min-width: 45rem) {
   body {
     overflow-y: hidden;
   }
