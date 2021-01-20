@@ -32,7 +32,7 @@ function Fileview(props: { state: StateAlike<FileviewState> }) {
                 </button>
             </div>
             <main className={css.content}>
-                { selectedFile == null ? <h1>Select file</h1> : <pre>{selectedContent?.content}</pre>}
+                { selectedFile == null ? <h1>Select file</h1> : <pre className={css.content_view}>{selectedContent?.content}</pre>}
             </main>
         </article>
     );

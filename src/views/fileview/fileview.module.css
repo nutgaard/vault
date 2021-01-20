@@ -84,3 +84,7 @@
     padding: 1rem;
 }
 
+.content_view {
+    white-space: pre-line;
+    word-break: break-all;
+}
