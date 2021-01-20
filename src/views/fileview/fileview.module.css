@@ -22,17 +22,30 @@
     grid-area: logo;
     display: flex;
     align-items: center;
-    padding: 0.5rem 1rem;
+    justify-content: center;
+    padding: 0.5rem 0;
     border-bottom: 1px solid;
     border-right: 1px solid;
     border-color: var(--ring);
 }
 .logo img {
     height: 100%;
-    margin-right: 1rem;
 }
 .logo span {
     font-weight: bold;
+    display: none;
+}
+@media (min-width: 45rem) {
+    .logo {
+        padding: 0.5rem 1rem;
+        justify-content: left;
+    }
+    .logo img {
+        padding-right: 1rem;
+    }
+    .logo span {
+        display: inline-block;
+    }
 }
 
 .header {

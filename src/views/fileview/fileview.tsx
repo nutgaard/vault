@@ -17,7 +17,7 @@ function Fileview(props: { state: StateAlike<FileviewState> }) {
     return (
         <article className={css.fileview}>
             <div className={css.logo}>
-                <img src={`${process.env.PUBLIC_URL}/lock__open.svg`} alt="logo" />
+                <img src={`${process.env.PUBLIC_URL}/lock__open.svg`} alt="Vault unlocked" />
                 <span>Vault unlocked</span>
             </div>
             <header className={css.header}>
