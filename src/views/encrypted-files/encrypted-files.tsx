@@ -25,7 +25,7 @@ function ListOfFiles(props: ListProps) {
     const clickHandler = (file: string) => async () => {
         setState(promptPasswordState(props));
         const content = await DB.get(file);
-        const password = await promptSecret(`Password for ${file}?`)
+        const password = await promptSecret(`Password for ${file}?`);
         if (password == null) {
             setState(listviewState(props));
         } else if (!await encryption.verifyPassword(password, content)) {

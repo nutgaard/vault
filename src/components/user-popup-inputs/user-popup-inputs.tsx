@@ -95,10 +95,23 @@ export function confirm(message: string): Promise<boolean> {
     return renderPopup(Confirm, {message});
 }
 
-export function prompt(message: string): Promise<string | null> {
-    return renderPopup(Prompt, {message, secret: false});
+type Until = (value: string | null) => boolean | Promise<boolean>;
+const untilDefault = () => true;
+export async function prompt(message: string, until: Until = untilDefault): Promise<string | null> {
+    let value: string | null = null
+    do {
+        value = await renderPopup(Prompt, {message, secret: false});
+    } while (!until(value));
+
+    return value;
 }
 
-export function promptSecret(message: string): Promise<string | null> {
-    return renderPopup(Prompt, {message, secret: true});
+export async function promptSecret(message: string, validate: Until = untilDefault): Promise<string | null> {
+    while (true) {
+        let value: string | null = await renderPopup(Prompt, {message, secret: true});
+        let isValid = await validate(value);
+        if (isValid) {
+            return value;
+        }
+    }
 }

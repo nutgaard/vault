@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import * as DB from './database';
 import state, {fileviewState, initState, isFileviewAlike, listviewState, States} from "./recoil/state";
 import {useAsyncEffect} from "./hooks/use-async-effect";
@@ -12,6 +12,7 @@ import UploadContent from "./views/load-new/upload-content";
 import LinkToContent from "./views/load-new/link-to-content";
 import Fileview from "./views/fileview/fileview";
 import {useDelayedEffect} from "./hooks/use-delayed-effect";
+import Encryption from "./encryption/encryption";
 
 (window as any).IDB = DB;
 
@@ -50,10 +51,13 @@ interface OpeningLayerProps {
     isOpening: boolean;
     onComplete?: () => void;
 }
+
 function OpeningLayer(props: OpeningLayerProps) {
-    const { isOpening, onComplete } = props;
+    const {isOpening, onComplete} = props;
     const [open, setOpen] = useState<boolean>(!isOpening);
-    useDelayedEffect(() => { setOpen(isOpening); }, 100, [setOpen, isOpening]);
+    useDelayedEffect(() => {
+        setOpen(isOpening);
+    }, 100, [setOpen, isOpening]);
 
     return (
         <div className={cls(css.opening_layer)}>
@@ -68,7 +72,7 @@ function OpeningLayer(props: OpeningLayerProps) {
                         alt="splash screen of lock"
                     />
                 </div>
-                <div className={cls(css.pane, css.right_pane)} />
+                <div className={cls(css.pane, css.right_pane)}/>
             </header>
         </div>
     );
@@ -112,10 +116,21 @@ function LockedLayer() {
 }
 
 function Application() {
+    const setState = useSetRecoilState(state);
+    useAsyncEffect(async () => {
+        const encryption = new Encryption();
+        const encryptedContent = await DB.get('data.enc');
+        const decrypted = await encryption.decrypt('password', encryptedContent);
+        const content = JSON.parse(decrypted);
+        setTimeout(() => {
+            setState(fileviewState({ files: ['data.enc'], file: 'data.enc', content }))
+        }, 500);
+    });
+
     return (
         <>
-            <UnlockedLayer />
-            <LockedLayer />
+            <UnlockedLayer/>
+            <LockedLayer/>
         </>
     );
 }
