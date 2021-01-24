@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/vault/static/css/main.45ddf2a8.chunk.css",
+    "main.js": "/vault/static/js/main.c0436758.chunk.js",
+    "main.js.map": "/vault/static/js/main.c0436758.chunk.js.map",
+    "runtime-main.js": "/vault/static/js/runtime-main.98c728f7.js",
+    "runtime-main.js.map": "/vault/static/js/runtime-main.98c728f7.js.map",
+    "static/js/2.45e9edc3.chunk.js": "/vault/static/js/2.45e9edc3.chunk.js",
+    "static/js/2.45e9edc3.chunk.js.map": "/vault/static/js/2.45e9edc3.chunk.js.map",
+    "index.html": "/vault/index.html",
+    "static/css/main.45ddf2a8.chunk.css.map": "/vault/static/css/main.45ddf2a8.chunk.css.map",
+    "static/js/2.45e9edc3.chunk.js.LICENSE.txt": "/vault/static/js/2.45e9edc3.chunk.js.LICENSE.txt",
+    "static/media/file.0403bb2b.svg": "/vault/static/media/file.0403bb2b.svg",
+    "static/media/folder.b5544993.svg": "/vault/static/media/folder.b5544993.svg",
+    "static/media/vault-flow.730e0c98.png": "/vault/static/media/vault-flow.730e0c98.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.98c728f7.js",
+    "static/js/2.45e9edc3.chunk.js",
+    "static/css/main.45ddf2a8.chunk.css",
+    "static/js/main.c0436758.chunk.js"
+  ]
+}
