@@ -10,7 +10,7 @@ interface Props extends HtmlProps {
 }
 
 function About(props: Props) {
-    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const open = useCallback(() => setIsOpen(true), [setIsOpen]);
     const close = useCallback(() => setIsOpen(false), [setIsOpen]);
 
