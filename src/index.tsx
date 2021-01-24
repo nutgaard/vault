@@ -5,7 +5,7 @@ import Application from './application';
 // import reportWebVitals from './reportWebVitals';
 import './index.css';
 import './encryption/domain';
-import { setAppElement } from './components/user-popup-inputs/user-popup-inputs'
+import { setAppElement } from './components/modal/modal'
 
 const appRoot: HTMLElement = document.getElementById('root')!!;
 setAppElement(appRoot);

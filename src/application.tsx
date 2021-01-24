@@ -12,6 +12,7 @@ import UploadContent from "./views/load-new/upload-content";
 import LinkToContent from "./views/load-new/link-to-content";
 import Fileview from "./views/fileview/fileview";
 import {useDelayedEffect} from "./hooks/use-delayed-effect";
+import About from "./components/about/about";
 
 (window as any).IDB = DB;
 
@@ -20,7 +21,12 @@ function getView(state: States): React.ReactElement<{}> {
         case "init":
             return <></>
         case "listview":
-            return <EncryptedFiles state={state}/>
+            return (
+                <>
+                    <EncryptedFiles state={state} className="block-s"/>
+                    <About />
+                </>
+            );
         case "promptpassword":
             return <></>
         case "loadnew":

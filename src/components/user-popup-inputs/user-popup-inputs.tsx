@@ -1,27 +1,10 @@
 import React, {createElement, useState} from 'react';
 import {render, unmountComponentAtNode} from 'react-dom';
-import Modal from 'react-modal';
-import css from './user-popup-inputs.module.css';
+import Modal from '../modal/modal';
 import Button from "../button/button";
 import TextInput from '../textinput/textinput';
+import css from './user-popup-inputs.module.css';
 import {focusOnFirstFocusable} from "../../hooks/use-focus-on-first-focusable";
-
-interface Props {
-    children: React.ReactNode;
-}
-
-function UserPopupInputs(props: Props) {
-    return (
-        <Modal isOpen={true} contentRef={el => focusOnFirstFocusable(el)} className={css.modal}
-               overlayClassName={css.overlay}>
-            {props.children}
-        </Modal>
-    );
-}
-
-export function setAppElement(element: string | HTMLElement) {
-    Modal.setAppElement(element)
-}
 
 type PopupComponentProps<RESULT, PROPS> = { close(result: RESULT): void; } & PROPS;
 type PopupComponent<RESULT, PROPS> = React.ComponentType<PopupComponentProps<RESULT, PROPS>>
@@ -46,10 +29,10 @@ type AlertProps = { message: string };
 
 function Alert(props: PopupComponentProps<void, AlertProps>) {
     return (
-        <UserPopupInputs>
+        <Modal className={css.modal} isOpen={true} contentRef={el => focusOnFirstFocusable(el)}>
             <p>{props.message}</p>
             <Button onClick={() => props.close()}>OK</Button>
-        </UserPopupInputs>
+        </Modal>
     );
 }
 
@@ -57,11 +40,11 @@ type ConfirmProps = { message: string };
 
 function Confirm(props: PopupComponentProps<boolean, ConfirmProps>) {
     return (
-        <UserPopupInputs>
+        <Modal className={css.modal} isOpen={true} contentRef={el => focusOnFirstFocusable(el)}>
             <p>{props.message}</p>
             <Button onClick={() => props.close(true)}>OK</Button>
             <Button flat onClick={() => props.close(false)}>Cancel</Button>
-        </UserPopupInputs>
+        </Modal>
     );
 }
 
@@ -70,7 +53,7 @@ type PromptProps = { message: string; secret: boolean; };
 function Prompt(props: PopupComponentProps<string | null, PromptProps>) {
     const [value, setValue] = useState("")
     return (
-        <UserPopupInputs>
+        <Modal className={css.modal} isOpen={true} contentRef={el => focusOnFirstFocusable(el)}>
             <form>
                 <p>{props.message}</p>
                 <TextInput
@@ -82,7 +65,7 @@ function Prompt(props: PopupComponentProps<string | null, PromptProps>) {
                 <Button onClick={() => props.close(value)}>OK</Button>
                 <Button type="button" flat onClick={() => props.close(null)}>Cancel</Button>
             </form>
-        </UserPopupInputs>
+        </Modal>
     );
 }
 

@@ -22,3 +22,9 @@
   border-color: var(--highlight);
   background-color: var(--background-color);
 }
+
+.linkstyling {
+  background: none;
+  border: none;
+  text-decoration: underline;
+}

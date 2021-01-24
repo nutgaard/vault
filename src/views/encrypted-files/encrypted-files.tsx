@@ -62,6 +62,7 @@ function NoFiles() {
 
 interface Props {
     state: ListviewState;
+    className?: string;
 }
 
 function EncryptedFiles(props: Props) {
@@ -79,7 +80,7 @@ function EncryptedFiles(props: Props) {
     );
 
     return (
-        <Box header={header} footer={footer}>
+        <Box header={header} footer={footer} className={props.className}>
             {content}
         </Box>
     )

@@ -1,0 +1,29 @@
+.open_link {
+    font-size: 0.75rem;
+    background-color: var(--theme-color);
+    color: var(--background-color);
+}
+
+.modal {
+    width: 100%;
+}
+
+.modal h2:first-child {
+    margin-top: 0;
+}
+
+.modal code {
+    background-color: var(--text-color);
+    color: var(--background-color);
+    border-radius: 0.25rem;
+    padding: 0rem 0.25rem;
+}
+
+.modal caption {
+    text-align: left;
+}
+
+.modal img {
+    width: 100%;
+    mix-blend-mode: multiply;
+}

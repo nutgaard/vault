@@ -33,7 +33,8 @@
     "eject": "react-scripts eject",
     "secrets:pack": "node vault-storage/scripts/pack.js",
     "secrets:unpack": "node vault-storage/scripts/unpack.js",
-    "secrets:changepassword": "node vault-storage/scripts/change-password.js"
+    "secrets:changepassword": "node vault-storage/scripts/change-password.js",
+    "scaffold": "node scripts/scaffold.js"
   },
   "eslintConfig": {
     "extends": [
