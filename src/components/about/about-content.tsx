@@ -1,5 +1,6 @@
 import React from 'react';
 import diagram from './vault-flow.png';
+import css from './about.module.css';
 
 interface Props {
     close: () => void;
@@ -7,7 +8,7 @@ interface Props {
 
 function AboutContent(props: Props) {
     return (
-        <>
+        <section className={css.responsive_table}>
             <h2>Encryption</h2>
             <p>
                 Your <code>password</code> and <code>content</code> goes in, and out comes a hot mess of garbage
@@ -32,32 +33,36 @@ function AboutContent(props: Props) {
             </p>
             <table className="block-l">
                 <caption>So far, we got the following random values generated;</caption>
-                <tr><th>Name</th><th>Private/Public</th><th>Description</th></tr>
-                <tr>
-                    <td>K1</td>
-                    <td>Private</td>
-                    <td>The encryption key used to encrypt the content, and must therefore be kept private.</td>
-                </tr>
-                <tr>
-                    <td>K2</td>
-                    <td>Private</td>
-                    <td>The encryption key used to encrypt <code>K1</code>, and must therefore be kept private.</td>
-                </tr>
-                <tr>
-                    <td>K3</td>
-                    <td>Public</td>
-                    <td>Used for password validation when trying to decrypt later on.</td>
-                </tr>
-                <tr>
-                    <td>K1Encrypted</td>
-                    <td>Public</td>
-                    <td>Encrypted version of <code>K1</code>, can be public since <code>K2</code> is needed to decrypt it.</td>
-                </tr>
-                <tr>
-                    <td>Salt</td>
-                    <td>Public</td>
-                    <td>Used for key-derivation, and is needed when decrypting later on.</td>
-                </tr>
+                <thead>
+                    <tr><th>Name</th><th>Private/Public</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>K1</td>
+                        <td>Private</td>
+                        <td>The encryption key used to encrypt the content, and must therefore be kept private.</td>
+                    </tr>
+                    <tr>
+                        <td>K2</td>
+                        <td>Private</td>
+                        <td>The encryption key used to encrypt <code>K1</code>, and must therefore be kept private.</td>
+                    </tr>
+                    <tr>
+                        <td>K3</td>
+                        <td>Public</td>
+                        <td>Used for password validation when trying to decrypt later on.</td>
+                    </tr>
+                    <tr>
+                        <td>K1Encrypted</td>
+                        <td>Public</td>
+                        <td>Encrypted version of <code>K1</code>, can be public since <code>K2</code> is needed to decrypt it.</td>
+                    </tr>
+                    <tr>
+                        <td>Salt</td>
+                        <td>Public</td>
+                        <td>Used for key-derivation, and is needed when decrypting later on.</td>
+                    </tr>
+                </tbody>
             </table>
 
             <p>
@@ -86,7 +91,7 @@ function AboutContent(props: Props) {
 
             <h2>Diagram</h2>
             <img src={diagram} alt="Diagram of how values flow" />
-        </>
+        </section>
     )
 }
 
