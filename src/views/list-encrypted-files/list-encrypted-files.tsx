@@ -7,8 +7,7 @@ import state, {
     promptPasswordState,
     StateAlike
 } from "../../recoil/state";
-import css from './encrypted-files.module.css';
-import listviewCss from './listview.module.css';
+import css from './list-encrypted-files.module.css';
 import {useSetRecoilState} from "recoil";
 import Box from '../../components/box/box';
 import Button from "../../components/button/button";
@@ -32,21 +31,21 @@ function ListOfFiles(props: ListProps) {
             await alert('Invalid password');
             setState(listviewState(props));
         } else {
-            const decryptedString = await encryption.decrypt(password, content)
+            const decryptedString = await encryption.decrypt(password, content);
             const filecontent = JSON.parse(decryptedString);
-
+            console.log('filecontent', filecontent);
             setState(loadingFileviewState({ file, files: props.files, content: filecontent }));
         }
     }
     const elements = props.files
         .map((element) => (
-            <li className={listviewCss.list_element} key={element}>
+            <li className={css.list_element} key={element}>
                 <button className={css.link_button} onClick={clickHandler(element)}>{element}</button>
             </li>
         ));
 
     return (
-        <ul className={listviewCss.list_of_files}>
+        <ul className={css.list_of_files}>
             {elements}
         </ul>
     );
@@ -65,7 +64,7 @@ interface Props {
     className?: string;
 }
 
-function EncryptedFiles(props: Props) {
+function ListEncryptedFiles(props: Props) {
     const files = props.state.files;
     const setState = useSetRecoilState(state);
     const loadfileCallback = () => setState(loadnewState({files}));
@@ -86,4 +85,4 @@ function EncryptedFiles(props: Props) {
     )
 }
 
-export default EncryptedFiles;
+export default ListEncryptedFiles;

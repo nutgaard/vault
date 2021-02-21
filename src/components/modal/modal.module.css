@@ -13,7 +13,7 @@
     z-index: 1010;
     background-color: var(--background-color);
     padding: 1rem;
-    border-radius: 4px;
+    border-radius: 0.25rem;
 }
 
 .modal:focus {

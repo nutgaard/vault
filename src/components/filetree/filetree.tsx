@@ -1,67 +1,19 @@
-import React, {useMemo, useState} from 'react';
+import React, {useState} from 'react';
 import cls from './../cls';
 import css from './filetree.module.css';
 import {ReactComponent as FileSvg} from './file.svg';
 import {ReactComponent as FolderSvg} from './folder.svg';
+import {File, Directory, Filesystem} from "../../hooks/use-filesystem";
 
 interface Props {
-    files: string[];
-    selected: string | null;
-
-    onSelect(file: string): void;
-}
-
-export type File = { filepath: string; name: string; isFile: true; isDirectory: false; };
-export type Directory = { name: string; isFile: false; isDirectory: true; children: FileStructure };
-export type FileStructure = Array<File | Directory>;
-
-export function parsePaths(paths: string[]): Directory {
-    const root: Directory = {
-        name: '_',
-        isFile: false,
-        isDirectory: true,
-        children: []
-    };
-
-    paths.forEach((path) => {
-        let workingRoot: Directory = root;
-        const dirs = path.split('/');
-        const filename: string = dirs.pop()!;
-
-        for (const dir of dirs) {
-            const existingDir: Directory | undefined = workingRoot.children
-                .find((child) => child.isDirectory && child.name === dir) as Directory | undefined;
-
-            if (existingDir !== undefined) {
-                workingRoot = existingDir;
-            } else {
-                const newDirectory: Directory = {
-                    name: dir,
-                    isDirectory: true,
-                    isFile: false,
-                    children: []
-                };
-                workingRoot.children.push(newDirectory);
-                workingRoot = newDirectory;
-            }
-        }
-        workingRoot.children.push({
-            filepath: path,
-            name: filename,
-            isFile: true,
-            isDirectory: false
-        })
-    });
-
-    return root;
+    filesystem: Filesystem;
 }
 
 interface DirectoryViewProps {
     directory: Directory;
     showDirectory: boolean;
-    selected: string | null;
 
-    onFileSelected(file: string): void;
+    onFileSelected(file: File): void;
 }
 
 function fileStructureComparator(first: File | Directory, second: File | Directory): number {
@@ -75,9 +27,12 @@ function fileStructureComparator(first: File | Directory, second: File | Directo
 }
 
 function DirectoryView(props: DirectoryViewProps) {
-    const {directory, showDirectory, selected, onFileSelected} = props;
-
-    const content = directory.children
+    const {
+        directory,
+        showDirectory,
+        onFileSelected
+    } = props;
+    const content = [...directory.children]
         .sort(fileStructureComparator)
         .map((child, i) => {
             if (child.isDirectory) {
@@ -86,7 +41,6 @@ function DirectoryView(props: DirectoryViewProps) {
                         key={child.name}
                         directory={child}
                         showDirectory={true}
-                        selected={selected}
                         onFileSelected={onFileSelected}
                     />
                 );
@@ -94,8 +48,8 @@ function DirectoryView(props: DirectoryViewProps) {
                 return (
                     <button
                         key={child.filepath}
-                        className={cls(css.file, child.filepath === selected ? css.file_selected : null)}
-                        onClick={() => onFileSelected(child.filepath)}
+                        className={css.file}
+                        onClick={() => onFileSelected(child)}
                     >
                         <FileSvg height="16"/>
                         {child.name}
@@ -129,13 +83,12 @@ function DirectoryView(props: DirectoryViewProps) {
 }
 
 function Filetree(props: Props) {
-    const {files} = props;
-    const filestructure = useMemo(() => parsePaths(files), [files])
-
-    return (
+        return (
         <div className={cls(css.wrapper)}>
-            <DirectoryView directory={filestructure} showDirectory={false} selected={props.selected}
-                           onFileSelected={props.onSelect}/>
+            <DirectoryView
+                directory={props.filesystem.tree}
+                showDirectory={false}
+                onFileSelected={props.filesystem.openFile}/>
         </div>
     )
 }

@@ -53,5 +53,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "immer": "^3.3.0",
+    "use-immer": "^0.3.5"
   }
 }

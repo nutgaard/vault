@@ -3,14 +3,14 @@ import {useRecoilState, useRecoilValue} from "recoil";
 import * as DB from './database';
 import state, {fileviewState, initState, isFileviewAlike, listviewState, States} from "./recoil/state";
 import {useAsyncEffect} from "./hooks/use-async-effect";
-import EncryptedFiles from "./views/encrypted-files/encrypted-files";
+import ListEncryptedFiles from "./views/list-encrypted-files/list-encrypted-files";
 import css from './application.module.css';
 import LoadNew from "./views/load-new/load-new";
 import cls from "./components/cls";
 import CopyPasteContent from "./views/load-new/copy-paste-content";
 import UploadContent from "./views/load-new/upload-content";
 import LinkToContent from "./views/load-new/link-to-content";
-import Fileview from "./views/fileview/fileview";
+import VaultUnlocked from "./views/vault-unlocked/vault-unlocked";
 import {useDelayedEffect} from "./hooks/use-delayed-effect";
 import About from "./components/about/about";
 
@@ -23,7 +23,7 @@ function getView(state: States): React.ReactElement<{}> {
         case "listview":
             return (
                 <>
-                    <EncryptedFiles state={state} className="block-s"/>
+                    <ListEncryptedFiles state={state} className="block-s"/>
                     <About />
                 </>
             );
@@ -47,7 +47,7 @@ function getView(state: States): React.ReactElement<{}> {
 function UnlockedLayer() {
     const currentState = useRecoilValue(state);
     if (isFileviewAlike(currentState)) {
-        return <Fileview state={currentState}/>
+        return <VaultUnlocked state={currentState}/>
     }
     return null;
 }

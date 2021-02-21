@@ -47,6 +47,9 @@
 .directory:active {
     background-color: var(--ring-dark);
 }
+.directory:focus {
+    background-color: var(--theme-open-color-light);
+}
 .files_wrapper {
     padding-left: 0.25rem;
     background-color: var(--theme-open-color);
@@ -72,6 +75,6 @@
 .file:active {
     background-color: var(--ring-dark);
 }
-.file_selected {
+.file:focus {
     background-color: var(--theme-open-color-light);
 }

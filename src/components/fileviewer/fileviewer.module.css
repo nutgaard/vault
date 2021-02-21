@@ -1,0 +1,6 @@
+.no_selected_file {
+    padding: 1rem;
+}
+.no_selected_file > * {
+    margin: 0;
+}

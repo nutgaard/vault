@@ -251,3 +251,8 @@ export function readBase64ToJson(base64: string): Validation<EncodedEncryptedCon
         return either.left([]);
     }
 }
+
+export function writeToJsonBase64(data: EncodedEncryptedContent): string {
+    const content = JSON.stringify(data);
+    return Buffer.from(content).toString('base64');
+}

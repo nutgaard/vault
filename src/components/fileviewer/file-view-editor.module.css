@@ -1,0 +1,82 @@
+:root {
+    --border: 1px solid var(--ring)
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /*padding: 0.5rem;*/
+}
+
+.tabs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: var(--background-color);
+}
+.tab {
+    position: relative;
+    display: inline-flex;
+}
+.tab_active {
+    background-color: white;
+    border-bottom: 2px solid var(--theme-open-color);
+}
+.tab_label, .tab_close {
+    border:none;
+    background: none;
+}
+.tab_label {
+    padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+}
+.tab_label:hover {
+    background-color: var(--ring);
+}
+.tab_label:focus {
+    outline: none;
+    background-color: var(--ring);
+}
+.tab_close {
+    font-size: 0.65rem;
+    position: absolute;
+    right: 0.25rem;
+    top: 50%;
+    margin-top: -0.6rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    border-radius: 100%;
+}
+.tab_close:hover {
+    background-color: var(--ring);
+}
+.tab_close:focus {
+    outline: none;
+    background-color: var(--ring);
+}
+
+.controls {
+    padding: 0.5rem;
+    border-top: var(--border);
+    border-bottom: var(--border);
+    background-color: var(--background-color);
+}
+.controls > * {
+    display: inline-block;
+    margin: 0;
+}
+.file_buttons > *:not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.editor_view {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0 0 0.25rem 0.25rem;
+    margin: 0;
+    resize: none;
+}
+.editor_view:focus {
+    outline: none;
+}
