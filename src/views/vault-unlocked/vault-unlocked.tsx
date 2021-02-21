@@ -1,18 +1,21 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useSetRecoilState} from "recoil";
 import state, {FileviewState, lockingFileviewState, StateAlike} from "../../recoil/state";
-import css from './fileview.module.css';
+import css from './vault-unlocked.module.css';
 import Filetree from "../../components/filetree/filetree";
+import {useFilesystem} from "../../hooks/use-filesystem";
+import Fileviewer from "../../components/fileviewer/fileviewer";
 
-function Fileview(props: { state: StateAlike<FileviewState> }) {
-    const [selectedFile, setSelectedFile] = useState<string | null>(null);
+function VaultUnlocked(props: { state: StateAlike<FileviewState> }) {
+    const fs = useFilesystem(props.state.content);
+
     const setState = useSetRecoilState(state);
     const lock = () => {
         setState(lockingFileviewState(props.state))
     };
-
-    const files = props.state.content.map((file) => file.filepath);
-    const selectedContent = props.state.content.find((c) => c.filepath === selectedFile);
+    useEffect(() => {
+        console.log('FS debugging', fs);
+    }, [fs]);
 
     return (
         <article className={css.fileview}>
@@ -24,7 +27,7 @@ function Fileview(props: { state: StateAlike<FileviewState> }) {
                 <p>Showing files in {props.state.file}</p>
             </header>
             <aside className={css.sidebar}>
-                <Filetree files={files} selected={selectedFile} onSelect={(file: string) => { setSelectedFile(file); }}/>
+                <Filetree filesystem={fs} />
             </aside>
             <div className={css.buttons}>
                 <button className={css.lock_button} onClick={lock}>
@@ -32,10 +35,10 @@ function Fileview(props: { state: StateAlike<FileviewState> }) {
                 </button>
             </div>
             <main className={css.content}>
-                { selectedFile == null ? <h1>Select file</h1> : <pre className={css.content_view}>{selectedContent?.content}</pre>}
+                <Fileviewer fs={fs} />
             </main>
         </article>
     );
 }
 
-export default Fileview;
+export default VaultUnlocked;
