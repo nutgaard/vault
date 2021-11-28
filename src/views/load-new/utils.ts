@@ -18,8 +18,8 @@ export async function saveContent(name: string, base64Content: string, setState:
     if (password === null) {
         return;
     }
-    const correntPassowrd = await encryption.verifyPassword(password, data);
-    if (!correntPassowrd) {
+    const correctPassword = await encryption.verifyPassword(password, data);
+    if (!correctPassword) {
         await alert("Wrong password.");
         return;
     }

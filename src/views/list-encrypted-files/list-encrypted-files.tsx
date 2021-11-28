@@ -34,7 +34,8 @@ function ListOfFiles(props: ListProps) {
             const decryptedString = await encryption.decrypt(password, content);
             const filecontent = JSON.parse(decryptedString);
             console.log('filecontent', filecontent);
-            setState(loadingFileviewState({ file, files: props.files, content: filecontent }));
+            const passwordVerifier = (password: string) => encryption.verifyPassword(password, content)
+            setState(loadingFileviewState({ file, files: props.files, content: filecontent, passwordVerifier }));
         }
     }
     const elements = props.files

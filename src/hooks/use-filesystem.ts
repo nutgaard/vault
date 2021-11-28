@@ -8,7 +8,27 @@ export type Directory = { name: string; isFile: false; isDirectory: true; childr
 export type UseFilesystem = Array<File | Directory>;
 export type UnparsedFilesystem = Array<{ filepath: string; content: string }>;
 
-function buildFilesystem(paths: UnparsedFilesystem): Directory {
+export function serializeFilesystem(root: Directory): UnparsedFilesystem {
+    const files = [];
+    const stack = [];
+    stack.push(root);
+
+    while (stack.length > 0) {
+        const current: File | Directory = stack.pop()!!;
+        if (current.isDirectory) {
+            stack.push(...current.children);
+        } else {
+            files.push({
+                filepath: current.filepath,
+                content: current.content
+            })
+        }
+    }
+
+    return files;
+}
+
+function deserializeFilesystem(paths: UnparsedFilesystem): Directory {
     const root: Directory = {
         name: '_',
         isFile: false,
@@ -78,13 +98,13 @@ export interface Filesystem {
     openFile(file: File): void;
     closeFile(file: File): void;
     updateFile(filepath: EditFile, content: string): void;
-    saveFile(file: EditFile): void;
+    saveFile(file: EditFile): UnparsedFilesystem;
     newFile(filepath: string, content?: string): void;
     deleteFile(filepath: string): void;
 }
 
 export function useFilesystem(data: UnparsedFilesystem): Filesystem {
-    const [draft, updateDraft] = useImmer<Directory>(buildFilesystem(data));
+    const [draft, updateDraft] = useImmer<Directory>(deserializeFilesystem(data));
     const [openFiles, updateOpenFiles] = useImmer<EditFile[]>([]);
     const [activeFilepath, setActiveFilepath] = useState<string | undefined>(undefined);
 
@@ -147,10 +167,13 @@ export function useFilesystem(data: UnparsedFilesystem): Filesystem {
                 editFile.editContent = newContent;
             }
         });
+        let out: UnparsedFilesystem;
         updateDraft((current) => {
             const { file: originalFile } = followPath(current, file.filepath);
             originalFile.content = newContent;
+            out = serializeFilesystem(current);
         });
+        return out!;
     }, [updateOpenFiles, updateDraft]);
 
     const newFile = useCallback((filepath: string, content?: string) => updateDraft((current) => {
