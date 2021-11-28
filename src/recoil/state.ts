@@ -1,5 +1,4 @@
 import {atom} from "recoil";
-import {EncodedEncryptedContent} from "../encryption/domain";
 
 export interface State {
     key: string;

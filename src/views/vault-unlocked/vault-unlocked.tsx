@@ -3,7 +3,7 @@ import {useSetRecoilState} from "recoil";
 import state, {FileviewState, lockingFileviewState, StateAlike} from "../../recoil/state";
 import css from './vault-unlocked.module.css';
 import Filetree from "../../components/filetree/filetree";
-import {Filesystem, useFilesystem, serializeFilesystem } from "../../hooks/use-filesystem";
+import {Filesystem, useFilesystem} from "../../hooks/use-filesystem";
 import Fileviewer from "../../components/fileviewer/fileviewer";
 import {alert, confirm, promptSecret} from "../../components/user-popup-inputs/user-popup-inputs";
 import Encryption from "../../encryption/encryption";
@@ -103,7 +103,7 @@ function VaultUnlocked(props: { state: StateAlike<FileviewState> }) {
     useEffect(() => {
         console.log('FS debugging', fs);
         updateArgs(hotkeyArgs);
-    }, [fs, updateArgs, passwordVerifier]);
+    }, [fs, updateArgs, hotkeyArgs]);
 
     const setState = useSetRecoilState(state);
     const lock = async () => {
